@@ -1,0 +1,32 @@
+.postinfo{
+	color: black;
+	border-style: dotted;
+	border-width: 2px;
+	margin: 15%;
+	margin-top: 20px;
+	padding: 10px;
+
+}
+.btn_reply{
+	margin-top: 10px;
+	text-align: center;
+}
+.layui-form-item{
+	margin: auto;
+}
+.edit_reply{
+	margin: auto;
+	background-color: white;
+	width:60%;
+	margin: 10%;
+	margin-left: 15%;
+}
+.reply{
+	border-style: dotted;
+	border-width: 2px;
+	margin: 15%;
+	padding: 10px;
+}
+.main{
+	margin-top: 200px;
+}

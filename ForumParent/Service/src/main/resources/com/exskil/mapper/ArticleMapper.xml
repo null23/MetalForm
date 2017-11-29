@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.exskil.mapper.ArticleMapper" >
+
+  <resultMap type="Article" id="articleBean">
+    <id column="aid" property="id" />
+    <result column="title" property="title" />
+    <result column="content" property="content" />
+    <result column="date" property="date" />
+    <association property="user" javaType="User">
+      <result column="username" property="name" />
+    </association>
+  </resultMap>
+
+  <select id="listArticle" resultMap="articleBean">
+    select a.id aid, a.title title, a.content content,a.date date,u.name username
+    from article a
+    left join user u on u.id = a.user
+  </select>
+
+  <select id="findArticleInfo" resultMap="articleBean">
+    select a.id aid, a.title title, a.content content,a.date date,u.name username
+    from article a
+    left join user u on u.id = a.user
+    where a.id = #{articleID}
+  </select>
+
+  <insert id="insert" parameterType="Article">
+   insert into article values(null,#{title},#{content},#{date},#{userID})
+  </insert>
+
+  <select id="listArticleMain" resultType="Article">
+    select * from article order by date desc limit 0,10
+  </select>
+</mapper>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.exskil.mapper.PostMapper" >
+
+  <resultMap type="Post" id="postBean">
+    <id column="pid" property="id" />
+    <result column="title" property="title" />
+    <result column="content" property="content" />
+    <result column="pdate" property="date" />
+    <result column="reply_date" property="reply_date" />
+    <result column="pviews" property="views" />
+    <result column="preplies" property="replies" />
+    <result column="ptop" property="top" />
+    <association property="user" javaType="User">
+      <result column="uid" property="id" />
+      <result column="username" property="name" />
+    </association>
+    <association property="plate" javaType="Plate">
+      <result column="plname" property="name" />
+    </association>
+  </resultMap>
+
+  <select id="listPost" resultMap="postBean">
+    select p.id pid,p.top ptop, p.title title, p.content content, p.time pdate,p.views pviews,p.replies preplies,p.reply_date reply_date, pl.name plname,u.id uid, u.name username
+    from post p
+    left join plate pl on p.plate=pl.id
+    left join user u on p.user=u.id
+	where p.status = 0
+    order by reply_date desc
+  </select>
+
+  <select id="findPostInfo" resultMap="postBean">
+    select p.id pid, p.title title, p.content content, p.time pdate, p.views pviews, p.replies preplies,pl.name plname,u.id uid, u.name username
+    from post p
+    left join plate pl on p.plate=pl.id
+    left join user u on p.user=u.id
+    where p.id = #{postID}
+  </select>
+
+  <insert id="insert" parameterType="Post">
+    insert into post (title, content, plate, user, time,reply_date)
+    values (#{title}, #{content}, #{plateID}, #{userID}, #{date},#{reply_date})
+  </insert>
+
+  <update id="updateReply_Date" parameterType="Post">
+    update post set reply_date = #{reply_date} where id = #{id}
+  </update>
+
+  <update id="updateViews" parameterType="Integer">
+    update post set views = views + 1 where id = #{postID}
+  </update>
+
+  <update id="updateReplies" parameterType="Post">
+    update post set replies = #{replies} where id = #{id}
+  </update>
+
+  <select id="selectHotPost" resultType="Post">
+    select * from post order by replies desc limit 0,10
+  </select>
+
+  <update id="deletePost">
+    update post set status = 1 where id = #{postID}
+  </update>
+
+  <select id="listPostByUser" resultMap="postBean">
+    select p.id pid, p.title title, p.content content, p.time pdate,p.views pviews,p.replies preplies,p.reply_date reply_date, pl.name plname,u.id uid, u.name username
+    from post p
+    left join plate pl on p.plate=pl.id
+    left join user u on p.user=u.id
+    where u.id = #{userID}
+    order by p.time desc
+  </select>
+
+  <select id="listMyRecycle" resultMap="postBean">
+    select p.id pid, p.title title, p.content content, p.time pdate,p.views pviews,p.replies preplies,p.reply_date reply_date, pl.name plname,u.id uid, u.name username
+    from post p
+    left join plate pl on p.plate=pl.id
+    left join user u on p.user=u.id
+    where u.id = #{userID}
+    and p.status = 1
+    order by p.time desc
+  </select>
+
+  <update id="recoverPost">
+    update post set status = 0 where id = #{postID}
+  </update>
+
+  <update id="updateReplyDate">
+    update post set reply_date = now() where id = #{postID}
+  </update>
+
+  <select id="lisTopPost" resultMap="postBean">
+    select p.id pid,p.top ptop, p.title title, p.content content, p.time pdate,p.top ptop,p.views pviews,p.replies preplies,p.reply_date reply_date, pl.name plname,u.id uid, u.name username
+    from post p
+    left join plate pl on p.plate=pl.id
+    left join user u on p.user=u.id
+	where p.top = 1
+    order by reply_date desc
+  </select>
+
+  <update id="addTopPost">
+    update post set top = 1 where id = #{postID}
+  </update>
+
+  <update id="deleteTopPost">
+    update post set top = 0 where id = #{postID}
+  </update>
+</mapper>

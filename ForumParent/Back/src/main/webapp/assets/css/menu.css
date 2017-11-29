@@ -1,0 +1,46 @@
+*{
+				margin:0px;
+				padding:0px;
+			}
+			#nav{
+				background-color:#eee; 
+				width:570px; 
+				height:40px; 
+				margin:0 auto;
+			}
+			ul{
+				list-style:none;
+			}
+			ul li{
+				float:left;
+				line-height:40px;
+				text-align:center;
+				position:relative;
+			}
+			a{
+				padding:0 10px;
+				text-decoration:none;
+				color:black;
+				display:block;
+			}
+			a:hover{
+				color:white;
+				background-color:gray;
+			}
+			ul li ul{
+				display:none;
+				position:absolute;
+				left:0px;
+				top:40px;
+			}
+			ul li ul li{
+				margin-top:3px;
+				background-color:#eee; 
+				float:none;
+			}
+			ul li ul li a:hover{
+				background-color:blue; 
+			}
+			ul li:hover ul{
+				display:block;
+			}
